@@ -1,0 +1,74 @@
+<h1>Welcome to yahtzee!</h1>
+
+<h2>How many players are you going to play with?</h2>
+
+
+<!-- <#%= form_with scope: :player, url:new_player_path,method:"get" do |form| %>
+   
+       <#%= form.label :player_number %>
+       <#%= form.text_field :player_number, type: 'text' %>
+
+      <#%= form.submit "Go!"%>
+<#% end %> -->
+
+<button id="reset" onclick="reset()"> reset</button>
+
+<div id="frame" style="height: 200px;">
+	<h5>not selected</h5>
+	<div  id="not-selected" style="height:50%;border: black 1px solid;">
+	</div>
+<button id="roll" onclick="roll()"> Roll</button>
+	
+	<h5>selected</h5>
+	<div id="selected" style="height:50%;border: black 1px solid;">
+		
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+	var turnCounter = 0;
+	var totalDice = 5;
+	var dice = [];
+	var selectedDie = [];
+	function roll(){
+		if (turnCounter < 3){
+			console.log(selectedDie.length,totalDice)
+			dice = generateDice(totalDice-selectedDie.length);
+			printDie(dice,selectedDie);
+			turnCounter++;
+			return dice
+		}else {
+			var button = document.getElementById("roll");
+			button.classList.add("hide");
+			console.log("its over 3")
+		}
+	}
+
+	var notSelected = document.getElementById("not-selected");
+	notSelected.addEventListener('click', function(event){
+		console.log(event.target.classList.contains("dice"));
+		var selectedValue = parseInt(event.target.innerHTML);
+		selectedDie.push(selectedValue);
+		removeDie(selectedValue,dice);		
+		printDie(dice,selectedDie);
+	});
+
+
+	var selected = document.getElementById("selected");
+	selected.addEventListener('click', function(event){
+		var selectedValue = event.target.innerHTML;
+		dice.push(selectedValue);
+		removeDie(selectedValue,selectedDie);		
+		printDie(dice,selectedDie);
+	});
+
+	function reset(){
+		turnCounter = 0;
+		var button = document.getElementById("roll");
+		button.classList.remove("hide");
+		console.log("its in reset")
+	}
+</script>
